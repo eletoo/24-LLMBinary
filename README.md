@@ -4,25 +4,27 @@
 
 ```
 git clone <this repo>
-docker buildx build . -t sicinf:cpu
+docker buildx build . -t ghcr.io/eletoo/24-llmbinary:latest
 ```
 
 ## Evaluate test data
 ### Run inference on a single dataset
 Please replace `<dataset>.json` with the desired dataset file name in the `/dataset` directory.
 ```
+mkdir /out
 docker run --rm -it \
     -v ./dataset:/dataset:z \
     -v ./out:/out:z \
-    sicinf:cpu \
+    ghcr.io/eletoo/24-llmbinary:latest \
     python main.py NoFun --dataset /dataset/<dataset>.json --results /out/result.json --output /out/out.json
 ```
 
 ### Generate plots for a given output
 ```
+mkdir /out
 docker run --rm -it \
     -v ./out:/out:z \
-    sicinf:cpu \
+    ghcr.io/eletoo/24-llmbinary:latest \
     python ELAB.py /out/out.json /out/plots/
 ```
 
@@ -32,5 +34,6 @@ It will output all the files with the naming convention `<dataset name>.(output|
 the plots in a directory, named the same as the dataset, inside `/out/plots`.
 
 ```
-docker run --rm -it -v ./dataset:/dataset:z -v ./out:/out:z sicinf:cpu
+mkdir /out
+docker run --rm -it -v ./dataset:/dataset:z -v ./out:/out:z ghcr.io/eletoo/24-llmbinary:latest
 ```
