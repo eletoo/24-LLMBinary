@@ -8,20 +8,29 @@ docker buildx build . -t sicinf:cpu
 ```
 
 ## Evaluate test data
-### Run inference
+### Run inference on a single dataset
+Please replace `<dataset>.json` with the desired dataset file name in the `/dataset` directory.
 ```
 docker run --rm -it \
     -v ./dataset:/dataset:z \
-    -v ./out:/out \
+    -v ./out:/out:z \
     sicinf:cpu \
     python main.py NoFun --dataset /dataset/<dataset>.json --results /out/result.json --output /out/out.json
 ```
 
-### Generate plots
-
+### Generate plots for a given output
 ```
 docker run --rm -it \
-    -v ./out:/out \
+    -v ./out:/out:z \
     sicinf:cpu \
     python ELAB.py /out/out.json /out/plots/
+```
+
+### Autorun inference and generate plots 
+This script will run inference and plot generation for every dataset present in the /dataset directory.
+It will output all the files with the naming convention `<dataset name>.(output|results)` and will place
+the plots in a directory, named the same as the dataset, inside `/out/plots`.
+
+```
+docker run --rm -it -v ./dataset:/dataset:z -v ./out:/out:z sicinf:cpu
 ```

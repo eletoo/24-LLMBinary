@@ -23,8 +23,15 @@ RUN python -c "import nltk; nltk.download('wordnet')"
 COPY main.py .
 COPY LICENSE .
 COPY ELAB.py .
+COPY entrypoint.sh /bin/entrypoint.sh
 
+RUN chmod +x /bin/entrypoint.sh
 RUN chown ${USERID} -R .
 USER ${USERID}
+
 RUN python -c "import nltk; nltk.download('wordnet')"
 
+VOLUME /out
+VOLUME /dataset
+ENTRYPOINT ["/bin/bash"]
+CMD ["/bin/entrypoint.sh"]
